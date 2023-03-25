@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>HR Management System</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+    <style>
+      
+      .nav-tabs .nav-link{
+        background:aliceblue;
+        color: black;
+      }
+      .nav-tabs .nav-link.active{
+        background: aliceblue;
+        color: black;
+        border: 3px solid rgb(152,207,247);
+        border-bottom: none;
+      }
+
+      .myBdr{
+        border: 2px solid rgb(152,207,247);
+
+      }
+
+      .myBg{
+        background-color: aliceblue;
+      }
+
+      .myFt{
+        font-family: cursive;
+      }
+    </style>
+
+</head>
+
+<body>
+  <header>
+    <!-- place navbar here -->
+  </header>
+  <main>
+    <!-- Nav tabs -->
+    <p class="h2 p-1 m-0 myBg myFt ">Welcome to Company ABC</p>
+    <div class="bg-secondary d-flex justify-content-between">
+      <ul class="nav nav-tabs pt-2 px-2 " id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="Applicant-tab" data-bs-toggle="tab" data-bs-target="#Applicant" type="button" role="tab" aria-controls="home" aria-selected="true">Applicant</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="HR-tab" data-bs-toggle="tab" data-bs-target="#HR" type="button" role="tab" aria-controls="profile" aria-selected="false">HR</button>
+        </li>
+      </ul>
+      <p class="btn btn-danger m-2" id="login-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Login/Register</p>
+      <p class="btn btn-dark m-2" id="logout-btn">Logout</p>
+
+    </div>
+
+    
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">                
+                <div class="modal-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" id="myTab3" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" aria-controls="home" aria-selected="true">Register</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="profile" aria-selected="false">Login</button>
+                      </li>                      
+                    </ul>
+                    
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="register" role="tabpanel" aria-labelledby="home-tab"> 
+                        <form id="candidateForm" class="myBdr p-3 rounded-4 myBg">
+                          <p class="display-6 bg-light px-3 rounded-3 border">Candidate Registration</p>
+                          <div class="mb-3">
+                            <label for="candidateName" class="form-label">Name</label>
+                            <input type="text"
+                              class="form-control" id="candidateName" aria-describedby="helpId" placeholder="Enter Your Name">
+                          </div>
+                          <div class="mb-3">
+                            <label for="candidateEmail" class="form-label">Email</label>
+                            <input type="email"
+                              class="form-control" id="candidateEmail" aria-describedby="helpId" placeholder="Enter Your Email">
+                          </div>
+                          <div class="mb-3">
+                            <label for="candidateDOB" class="form-label">Date of Birth</label>
+                            <input type="date"
+                              class="form-control" id="candidateDOB" aria-describedby="helpId" placeholder="Enter Your Email">
+                          </div>
+                          <button type="button" class="btn btn-primary close" data-bs-dismiss="modal" id="regSubmit">Register</button>
+                        </form>  
+                      </div>
+                      <div class="tab-pane" id="login" role="tabpanel" aria-labelledby="profile-tab"> 
+                        <form id="candidateLoginForm" class="myBdr p-3 rounded-4 myBg">
+                          <p class="display-6 bg-light px-3 rounded-3 border">Candidate Login</p>
+                          <div class="mb-3">
+                            <label for="candidateID" class="form-label">Candidate ID</label>
+                            <input type="number"
+                              class="form-control" id="candidateID" aria-describedby="helpId" placeholder="Enter Your Candidate ID">
+                          </div>
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="candidateLogin">Login</button>
+                        </form>    
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+      
+          
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="Applicant" role="tabpanel" aria-labelledby="Applicant-tab">
+        <div class="container p-2" id="candidateDB">
+          <div class="row">            
+              <div class="myBdr p-3 rounded-4">
+                <p id="candidateDashboard" class="display-6">Candidate Dashboard</p>
+                <p>Name :<span class="fw-semibold text-info" id="CandName"></span></p>
+                <p>Age :<span class="fw-semibold text-info" id="CandAge"></span></p>
+                <p>Email :<span class="fw-semibold text-info" id="CandEmail"></span></p>
+                
+                  <div class="container-fluid">
+                    <p class="display-6">Available Jobs</p>
+                    
+                    <div class="d-flex py-3" id="availableJobs">
+                      
+                    </div>
+                  </div>
+                  <div class="container-fluid">
+                    <p class="display-6">You have applied for</p> 
+                    <div class="d-flex py-3" id="appliedJobs">
+                      
+                    </div>                   
+                  </div>
+                
+              </div>            
+          </div>
+        </div> 
+        <div class="container p-2" id="notloggedin">
+          <p class="h3">Dear candidate kindly register/login to apply for job.</p>
+          
+        </div>
+       </div>
+      <div class="tab-pane" id="HR" role="tabpanel" aria-labelledby="HR-tab"> 
+        <div class="container p-2">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" id="myTabInner" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="vacancy-tab" data-bs-toggle="tab" data-bs-target="#vacancy" type="button" role="tab" aria-controls="home" aria-selected="true">Vacancy</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="applicants-tab" data-bs-toggle="tab" data-bs-target="#applicants" type="button" role="tab" aria-controls="profile" aria-selected="false">Applicants</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="scheduled-tab" data-bs-toggle="tab" data-bs-target="#scheduled" type="button" role="tab" aria-controls="messages" aria-selected="false">Scheduled</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="hired-tab" data-bs-toggle="tab" data-bs-target="#hired" type="button" role="tab" aria-controls="messages" aria-selected="false">Hired</button>
+            </li>
+          </ul>
+
+          <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+          <div class="modal fade" id="vacancyModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalTitleId">Create Vacancy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="vacancyForm" class="myBdr p-3 rounded-4 myBg">
+                    <p class="h4 bg-light px-3 rounded-3 border">Create Vacancy</p>
+                    <div class="mb-3">
+                      <label for="createVacDept" class="form-label">Department</label>
+                      <select id="createVacDept" class="form-select">
+                        <option value="Open Source">OpenSource</option>
+                        <option value="Dot Net">DotNet</option>
+                        <option value="Mobile App Development">Mobile App Development</option>
+                        <option value="Cloud">Cloud</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="createVacRole" class="form-label">Role</label>
+                      <select id="createVacRole" class="form-select">
+                        <option value="Trainee">Trainee</option>
+                        <option value="Junior Developer">Junior Developer</option>
+                        <option value="Senior Developer">Senior Developer</option>
+                        <option value="Project Manager">Project Manager</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="createVacNo" class="form-label">No of vacancies</label>
+                      <input type="number"
+                        class="form-control" id="createVacNo" aria-describedby="helpId" placeholder="No of vacancies">
+                    </div>                    
+                    Status :
+                    <div class="form-check form-check-inline mb-3">
+                      <input class="form-check-input" name="vacStatus" type="radio" id="open" value="1" checked>
+                      <label class="form-check-label" for="open">Open</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                      <input class="form-check-input" name="vacStatus" type="radio" id="closed" value="0">
+                      <label class="form-check-label" for="closed">Closed</label>
+                      </div>                      
+                    <button type="button" class="btn btn-primary close" data-bs-dismiss="modal" id="createVac">Create</button>
+                  </form>  
+                </div>
+                
+              </div>
+            </div>
+          </div>
+<!--Edit Modal Body -->
+          <div class="modal fade" id="vacancyModaledit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalTitleId">Edit Vacancy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="vacancyForm" class="myBdr p-3 rounded-4 myBg">
+                    <p class="h4 bg-light px-3 rounded-3 border">Create Vacancy</p>
+                    <div class="mb-3">
+                      <label for="editVacDept" class="form-label">Department</label>
+                      <select id="editVacDept" class="form-select">
+                        <option value="Open Source">OpenSource</option>
+                        <option value="Dot Net">DotNet</option>
+                        <option value="Mobile App Development">Mobile App Development</option>
+                        <option value="Cloud">Cloud</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="editVacRole" class="form-label">Role</label>
+                      <select id="editVacRole" class="form-select">
+                        <option value="Trainee">Trainee</option>
+                        <option value="Junior Developer">Junior Developer</option>
+                        <option value="Senior Developer">Senior Developer</option>
+                        <option value="Project Manager">Project Manager</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="editVacNo" class="form-label">No of vacancies</label>
+                      <input type="number"
+                        class="form-control" id="editVacNo" aria-describedby="helpId" placeholder="No of vacancies">
+                    </div>                    
+                    Status :
+                    <div class="form-check form-check-inline mb-3">
+                      <input class="form-check-input" name="editvacStatus" type="radio" id="editopen" value="1" checked>
+                      <label class="form-check-label" for="open">Open</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                      <input class="form-check-input" name="editvacStatus" type="radio" id="editclosed" value="0">
+                      <label class="form-check-label" for="closed">Closed</label>
+                      </div>                      
+                    <button type="button" class="btn btn-primary close" data-bs-dismiss="modal" id="editVacBtn">Update</button>
+                  </form>  
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <!-- Modal trigger button -->
+          
+          <!-- Modal Body -->
+          <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+          <div class="modal fade" id="scheduleModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="scheduleModalTitleId">Schedule Interview <span class="text-primary me-4">Application ID</span><span class="text-primary" id="scheduleAid"></span> </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="" class="form-label">Schedule Date & Time</label>
+                    <input type="datetime-local"
+                      class="form-control" name="" id="interviewDateTime" aria-describedby="helpId">
+                  </div>
+                  <div class="mb-3">
+                    <label for="selectFaculty" class="form-label">Faculty</label>
+                    <select class="form-select" id="selectFaculty">
+                      
+                    </select>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="scheduleInterview" data-bs-dismiss="modal">Schedule</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div class="tab-pane active" id="vacancy" role="tabpanel" aria-labelledby="vacancy-tab"> 
+              <button type="button" id="createVacancy" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#vacancyModal">+ create vacancy</button> 
+              <div class="container-fluid" id="vacTable">
+                
+              </div>
+            </div>
+            <div class="tab-pane" id="applicants" role="tabpanel" aria-labelledby="applicants-tab"> 
+              <div class="container-fluid" id="allApplicantsTable">
+                
+              </div>
+            </div>
+            <div class="tab-pane" id="scheduled" role="tabpanel" aria-labelledby="messages-tab"> 
+              <div class="container-fluid" id="allScheduledApplicantsTable">
+                
+              </div>
+             </div>
+            <div class="tab-pane" id="hired" role="tabpanel" aria-labelledby="messages-tab"> Hired </div>
+          </div>
+        </div>  
+      </div>
+    </div>    
+
+  </main>
+  <footer>
+    <!-- place footer here -->
+  </footer>
+  <script type="module" src="./src/main.ts"></script>
+
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+  </script>
+</body>
+
+
+</html>
