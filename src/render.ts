@@ -11,7 +11,7 @@ export class Render {
     let vacancies = this.arr.Vacancies;
     let str = ``;
     for (const i in vacancies) {
-      str += `<div class="card me-3 myBg" >
+      str += `<div class="card me-3 myBg" style="width:16rem">
             <div class="card-body pt-5">
               <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-light border border-secondary py-3 text-dark w-75">${vacancies[i].JobTitle}</span>
               <h6 class="card-subtitle mb-2 text-muted bg-light p-3 rounded-2 border border-secondary">${vacancies[i].Department}</h6>
@@ -116,8 +116,17 @@ export class Render {
           break;
         case 4:
           statusStr = "Selected";
-          message = `Hii, <span class="text-primary fw-semibold"> ${candidateData?.Name} </span>, We have concluded that your profile fits best for this role. We have decided to move forward with your profile. Kindly check the offer details and revert back within 48 hrs.`;
+          message = `Hii, <span class="text-primary fw-semibold"> ${candidateData?.Name} </span>, We have concluded that your profile fits best for this role. We have decided to move forward with your profile. Kindly check the offer details and revert back within 48 hrs. <p> <input type="button" class="btn btn-success" onclick="candApprove(${applicants[i].InterviewID})" value="Accept">
+          <input type="button" class="btn btn-danger" onclick=candDeny(${applicants[i].InterviewID}) value="Deny"></p>`;
           break;
+        case 5:
+          statusStr = "Hired";
+          message = `Congratulations, <span class="text-primary fw-semibold"> ${candidateData?.Name} </span>, Welcome Onboard, We are glad that you accepted the offer. We will be sharing further onboarding process details soon with you.`;
+            break;
+        case 6:
+          statusStr = "Denied";
+          message = `Candidate, <span class="text-primary fw-semibold"> ${candidateData?.Name} </span>, denied the offer`;
+            break;
         default:
           statusStr = "Update not Available";
           message="Update not Available";
@@ -318,6 +327,82 @@ export class Render {
             <td>${schedule}</td>
             <td>${statusStr}</td>
             <td>${updateStatusStr}</td>
+          </tr>   `;
+    }
+    place.innerHTML = str;
+  }
+
+  renderAllHiredApplicants(): void {
+    let place = document.getElementById(
+      "allHiredApplicantsTable"
+    ) as HTMLElement;
+    let applicants = this.arr.Applicants.filter(
+      (appl) => appl.scheduleDate !== undefined
+    );
+    applicants.sort((a, b) => a.CandidateID - b.CandidateID);
+    console.log(applicants);
+
+    let str = `<table class="table table-info table-striped">
+        <caption></caption>
+          <thead>
+              <tr>
+                  <th>Application ID</th>
+                  <th>Candidate Name</th>
+                  <th>Candidate Email</th>
+                  <th>Job Role t</th>
+                  <th>Department</th>
+                  <th>Hired By</th>
+                  <th>Status</th>
+              </tr>
+          </thead>
+          <tbody>`;
+    for (const i in applicants) {
+      let vacancydata = this.arr.Vacancies.find(
+        (vac) => vac.VacancyID === applicants[i].VacancyID
+      );
+      let candidatedata = this.arr.Candidates.find(
+        (cand) => cand.CandidateID === applicants[i].CandidateID
+      );
+      let facData = this.arr.Faculties.find(
+        (fac) => fac.FacultyID === applicants[i].FacultyID
+      );
+      let statusStr = "";
+
+
+      switch (applicants[i].status) {
+        case 0:
+          statusStr = "Pending";
+          break;
+        case 1:
+          statusStr = "Scheduled";
+          break;
+        case 2:
+          statusStr = "On Hold";
+          break;
+        case 3:
+          statusStr = "Rejected";
+          break;
+        case 4:
+          statusStr = "Selected";
+          break;
+      case 5:
+          statusStr = "Hired";
+            break;
+        case 6:
+          statusStr = "Denied";
+            break;
+        default:
+          statusStr = "Update not Available";
+          break;
+      }
+      str += `<tr>
+            <td>${applicants[i].InterviewID}</td>
+            <td>${candidatedata?.Name}</td>
+            <td> <a href="mailto:${candidatedata?.Email}"> ${candidatedata?.Email}</a></td>
+            <td><span class="fw-semibold text-primary">${vacancydata?.JobTitle}</span></td>
+            <td><span class="fw-semibold text-primary">${vacancydata?.Department}</span> </td>
+            <td><span class="fw-semibold text-info">${facData?.Name}</span> </td>
+            <td>${statusStr}</td>
           </tr>   `;
     }
     place.innerHTML = str;

@@ -5,6 +5,8 @@ export var InterviewStatus;
     InterviewStatus[InterviewStatus["onhold"] = 2] = "onhold";
     InterviewStatus[InterviewStatus["rejected"] = 3] = "rejected";
     InterviewStatus[InterviewStatus["selected"] = 4] = "selected";
+    InterviewStatus[InterviewStatus["hired"] = 5] = "hired";
+    InterviewStatus[InterviewStatus["denied"] = 6] = "denied";
 })(InterviewStatus || (InterviewStatus = {}));
 export class AppliCant {
     constructor(InterviewID, CandidateID, VacancyID) {

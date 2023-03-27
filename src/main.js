@@ -1,4 +1,4 @@
-var _a, _b, _c, _d, _e;
+var _a, _b, _c, _d, _e, _f;
 import * as person from "./person";
 import * as vacancy from "./vacancy";
 import * as applicant from "./applicant";
@@ -11,8 +11,6 @@ export class HRHandLer {
         this.Applicants = [];
         this.Faculties = [];
     }
-    scheduler() { }
-    result() { }
 }
 let hr = new HRHandLer();
 let currCandidate;
@@ -73,18 +71,32 @@ window.applyJob = function (id) {
 window.dispFac = function (vid, aid) {
     // console.log();
     myRender.displayFacultiesInScheduler(vid);
-    document.getElementById("scheduleAid").innerHTML = aid.toString();
-    document.getElementById("scheduleAid").innerHTML = aid.toString();
+    document.getElementById("scheduleAid").innerHTML =
+        aid.toString();
+    document.getElementById("scheduleAid").innerHTML =
+        aid.toString();
 };
 window.reRenderStatus = function (id) {
     let updatedStatus = Number(document.getElementById(`updateStatus${id}`).value);
     console.log(updatedStatus);
-    let updateAppl = hr.Applicants.find(appl => appl.InterviewID === id);
+    let updateAppl = hr.Applicants.find((appl) => appl.InterviewID === id);
     updateAppl === null || updateAppl === void 0 ? void 0 : updateAppl.setStatus(updatedStatus);
     myRender.renderAllApplicants();
     myRender.renderAllScheduledApplicants();
     myRender.renderAppliedJobTable(currCandidate.CandidateID);
-    document.getElementById(`updateStatus${id}`).value = updatedStatus;
+    document.getElementById(`updateStatus${id}`).value =
+        updatedStatus;
+};
+window.candApprove = function (aid) {
+    let hiredCand = hr.Applicants.find(appl => appl.InterviewID === aid);
+    hiredCand === null || hiredCand === void 0 ? void 0 : hiredCand.setStatus(applicant.InterviewStatus.hired);
+    myRender.renderAppliedJobTable(currCandidate.CandidateID);
+    myRender.renderAllHiredApplicants();
+};
+window.candDeny = function (aid) {
+    let hiredCand = hr.Applicants.find(appl => appl.InterviewID === aid);
+    hiredCand === null || hiredCand === void 0 ? void 0 : hiredCand.setStatus(applicant.InterviewStatus.hired);
+    myRender.renderAppliedJobTable(currCandidate.CandidateID);
 };
 function validateCandidateRegistration(name, mail, dob) {
     if (name === "") {
@@ -107,11 +119,25 @@ function validateCandidateRegistration(name, mail, dob) {
     }
     return true;
 }
+function candidateExists(cid) {
+    let arr = hr.Candidates.find((cand) => cand.CandidateID === cid);
+    if (arr) {
+        return true;
+    }
+    return false;
+}
 function validateCandidateLogin(cid) {
-    if (isNaN(Number(cid))) {
+    if (isNaN(Number(cid)) || cid === "") {
         alert("Enter valid Candidate ID");
+        document.getElementById("candidateLoginForm").reset();
         return false;
     }
+    if (!candidateExists(Number(cid))) {
+        alert(`No candidate with Candidate ID ${cid} exists. Kindly Register then Login`);
+        document.getElementById("candidateLoginForm").reset();
+        return false;
+    }
+    document.getElementById("candidateLoginForm").reset();
     return true;
 }
 function validateVacancyCreation(vno) {
@@ -165,7 +191,8 @@ window.onload = function () {
         alert(`Hii ${cname} ! You are Successfully registrerd in our portal. Your candidate ID is ${cid}. You can now directly login with your candidate ID`);
     }
 });
-(_b = document.getElementById("candidateLogin")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", function () {
+(_b = document
+    .getElementById("candidateLogin")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", function () {
     let cidstr = document.getElementById("candidateID").value;
     if (validateCandidateLogin(cidstr)) {
         candidateLoggedin = true;
@@ -221,18 +248,21 @@ window.onload = function () {
         myRender.renderVacancyTable();
     }
 });
-(_e = document.getElementById("scheduleInterview")) === null || _e === void 0 ? void 0 : _e.addEventListener('click', function () {
+(_e = document
+    .getElementById("scheduleInterview")) === null || _e === void 0 ? void 0 : _e.addEventListener("click", function () {
     let scheduleStr = document.getElementById("interviewDateTime").value;
     let scheduleFaculty = Number(document.getElementById("selectFaculty").value);
     let AID = Number(document.getElementById("scheduleAid").innerHTML);
     console.log(AID);
-    let selectApplication = hr.Applicants.find(appl => appl.InterviewID === AID);
+    let selectApplication = hr.Applicants.find((appl) => appl.InterviewID === AID);
     selectApplication === null || selectApplication === void 0 ? void 0 : selectApplication.setFaculty(scheduleFaculty);
     selectApplication === null || selectApplication === void 0 ? void 0 : selectApplication.setSchedule(new Date(scheduleStr));
     selectApplication === null || selectApplication === void 0 ? void 0 : selectApplication.setStatus(applicant.InterviewStatus.scheduled);
     myRender.renderAllApplicants();
     myRender.renderAllScheduledApplicants();
     myRender.renderAppliedJobTable(currCandidate.CandidateID);
+});
+(_f = document.getElementById("candApprove")) === null || _f === void 0 ? void 0 : _f.addEventListener('click', function () {
 });
 hr.Vacancies = [
     {
@@ -280,36 +310,36 @@ hr.Faculties = [
         Name: "Akhilesh Nimji",
         Email: "nirmal@radix.com",
         DOB: new Date(2001, 11, 13),
-        Department: "Cloud"
+        Department: "Cloud",
     },
     {
         FacultyID: 2,
         Name: "Jitali Patel",
         Email: "Jitali@radix.com",
         DOB: new Date(2001, 11, 13),
-        Department: "Mobile App Development"
+        Department: "Mobile App Development",
     },
     {
         FacultyID: 3,
         Name: "Jibran",
         Email: "jibran@radix.com",
         DOB: new Date(2001, 11, 13),
-        Department: "Open Source"
+        Department: "Open Source",
     },
     {
         FacultyID: 4,
         Name: "Bhargav",
         Email: "bhargav@radix.com",
         DOB: new Date(2001, 11, 13),
-        Department: "DotNet"
+        Department: "DotNet",
     },
     {
         FacultyID: 5,
         Name: "Sudip Tanver",
         Email: "sudip@radix.com",
         DOB: new Date(2001, 11, 13),
-        Department: "DotNet"
-    }
+        Department: "DotNet",
+    },
 ];
 myRender.myMethod();
 myRender.renderVacancyTable();

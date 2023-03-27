@@ -4,6 +4,8 @@ export enum InterviewStatus {
   onhold = 2,
   rejected = 3,
   selected = 4,
+  hired=5,
+  denied=6
 }
 export interface Applicant {
   InterviewID: number;
