@@ -95,7 +95,7 @@ window.candApprove = function (aid) {
 };
 window.candDeny = function (aid) {
     let hiredCand = hr.Applicants.find(appl => appl.InterviewID === aid);
-    hiredCand === null || hiredCand === void 0 ? void 0 : hiredCand.setStatus(applicant.InterviewStatus.hired);
+    hiredCand === null || hiredCand === void 0 ? void 0 : hiredCand.setStatus(applicant.InterviewStatus.denied);
     myRender.renderAppliedJobTable(currCandidate.CandidateID);
 };
 function validateCandidateRegistration(name, mail, dob) {

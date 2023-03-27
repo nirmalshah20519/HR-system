@@ -128,7 +128,7 @@ window.candApprove=function(aid:number){
 
 window.candDeny=function(aid:number){
   let hiredCand=hr.Applicants.find(appl=>appl.InterviewID===aid);
-  hiredCand?.setStatus(applicant.InterviewStatus.hired)
+  hiredCand?.setStatus(applicant.InterviewStatus.denied)
   myRender.renderAppliedJobTable(currCandidate.CandidateID)
 }
 
