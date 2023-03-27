@@ -53,6 +53,8 @@ window.deleteVacancyEdit = function (id) {
     myRender.renderVacancyTable();
 };
 window.applyJob = function (id) {
+    var _a;
+    console.log(id);
     let aid = hr.Applicants.length === 0
         ? 1
         : hr.Applicants[hr.Applicants.length - 1].InterviewID + 1;
@@ -61,12 +63,16 @@ window.applyJob = function (id) {
     let newApplication = new applicant.AppliCant(aid, cid, vid);
     newApplication.status = applicant.InterviewStatus.pending;
     hr.Applicants.push(newApplication);
-    document.getElementById(`job${id}`).value = "Applied";
-    document.getElementById(`job${id}`).setAttribute("disabled", "true");
-    myRender.myMethod();
-    myRender.renderAppliedJobTable(currCandidate.CandidateID);
-    myRender.renderAllApplicants();
-    myRender.renderAllScheduledApplicants();
+    console.log(document.getElementById(`job${id}`) !== null);
+    if (document.getElementById(`job${id}`) !== null) {
+        console.log(document.getElementById(`job${id}`));
+        document.getElementById(`job${id}`).value = "Applied";
+        (_a = document.getElementById(`job${id}`)) === null || _a === void 0 ? void 0 : _a.setAttribute("disabled", "true");
+        myRender.myMethod();
+        myRender.renderAppliedJobTable(currCandidate.CandidateID);
+        myRender.renderAllApplicants();
+        myRender.renderAllScheduledApplicants();
+    }
 };
 window.dispFac = function (vid, aid) {
     // console.log();
@@ -77,15 +83,17 @@ window.dispFac = function (vid, aid) {
         aid.toString();
 };
 window.reRenderStatus = function (id) {
-    let updatedStatus = Number(document.getElementById(`updateStatus${id}`).value);
+    console.log("Entering Rerender");
+    let updatedStatus = Number(document.getElementById(`updateStatu${id}`).value);
     console.log(updatedStatus);
     let updateAppl = hr.Applicants.find((appl) => appl.InterviewID === id);
     updateAppl === null || updateAppl === void 0 ? void 0 : updateAppl.setStatus(updatedStatus);
-    myRender.renderAllApplicants();
+    console.log(updateAppl);
     myRender.renderAllScheduledApplicants();
     myRender.renderAppliedJobTable(currCandidate.CandidateID);
-    document.getElementById(`updateStatus${id}`).value =
-        updatedStatus;
+    myRender.renderAllApplicants();
+    document.getElementById(`updateStatu${id}`).value = updatedStatus;
+    console.log(document.getElementById(`updateStatu${id}`).value);
 };
 window.candApprove = function (aid) {
     let hiredCand = hr.Applicants.find(appl => appl.InterviewID === aid);
@@ -254,13 +262,18 @@ window.onload = function () {
     let scheduleFaculty = Number(document.getElementById("selectFaculty").value);
     let AID = Number(document.getElementById("scheduleAid").innerHTML);
     console.log(AID);
-    let selectApplication = hr.Applicants.find((appl) => appl.InterviewID === AID);
-    selectApplication === null || selectApplication === void 0 ? void 0 : selectApplication.setFaculty(scheduleFaculty);
-    selectApplication === null || selectApplication === void 0 ? void 0 : selectApplication.setSchedule(new Date(scheduleStr));
-    selectApplication === null || selectApplication === void 0 ? void 0 : selectApplication.setStatus(applicant.InterviewStatus.scheduled);
-    myRender.renderAllApplicants();
-    myRender.renderAllScheduledApplicants();
-    myRender.renderAppliedJobTable(currCandidate.CandidateID);
+    if (scheduleStr === "") {
+        alert("Kindly select Schedule Date & Time");
+    }
+    else {
+        let selectApplication = hr.Applicants.find((appl) => appl.InterviewID === AID);
+        selectApplication === null || selectApplication === void 0 ? void 0 : selectApplication.setFaculty(scheduleFaculty);
+        selectApplication === null || selectApplication === void 0 ? void 0 : selectApplication.setSchedule(new Date(scheduleStr));
+        selectApplication === null || selectApplication === void 0 ? void 0 : selectApplication.setStatus(applicant.InterviewStatus.scheduled);
+        myRender.renderAllScheduledApplicants();
+        myRender.renderAllApplicants();
+        myRender.renderAppliedJobTable(currCandidate.CandidateID);
+    }
 });
 (_f = document.getElementById("candApprove")) === null || _f === void 0 ? void 0 : _f.addEventListener('click', function () {
 });
@@ -324,7 +337,7 @@ hr.Faculties = [
         Name: "Jibran",
         Email: "jibran@radix.com",
         DOB: new Date(2001, 11, 13),
-        Department: "Open Source",
+        Department: "Cloud",
     },
     {
         FacultyID: 4,
@@ -338,6 +351,48 @@ hr.Faculties = [
         Name: "Sudip Tanver",
         Email: "sudip@radix.com",
         DOB: new Date(2001, 11, 13),
+        Department: "Mobile App Development",
+    },
+    {
+        FacultyID: 6,
+        Name: "Jibran",
+        Email: "jibran@radix.com",
+        DOB: new Date(2001, 11, 13),
+        Department: "Open Source",
+    },
+    {
+        FacultyID: 7,
+        Name: "Alta Elliott",
+        Email: "bhargav@radix.com",
+        DOB: new Date(2001, 11, 13),
+        Department: "DotNet",
+    },
+    {
+        FacultyID: 8,
+        Name: "Martin Rodgers",
+        Email: "sudip@radix.com",
+        DOB: new Date(2001, 11, 13),
+        Department: "Open Source",
+    },
+    {
+        FacultyID: 9,
+        Name: "Edna Shelton",
+        Email: "jibran@radix.com",
+        DOB: new Date(2001, 11, 13),
+        Department: "Open Source",
+    },
+    {
+        FacultyID: 10,
+        Name: "Mabelle Schneider",
+        Email: "bhargav@radix.com",
+        DOB: new Date(2001, 11, 13),
+        Department: "DotNet",
+    },
+    {
+        FacultyID: 11,
+        Name: "Logan Weber",
+        Email: "sudip@radix.com",
+        DOB: new Date(2001, 11, 13),
         Department: "DotNet",
     },
 ];
@@ -345,3 +400,4 @@ myRender.myMethod();
 myRender.renderVacancyTable();
 myRender.renderAllApplicants();
 myRender.renderAllScheduledApplicants();
+myRender.renderAllHiredApplicants();

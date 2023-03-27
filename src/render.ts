@@ -1,4 +1,5 @@
 import { HRHandLer } from "./main";
+import { vacancyStatus } from "./vacancy";
 
 export class Render {
   public constructor(public arr: HRHandLer) {}
@@ -8,7 +9,7 @@ export class Render {
 
   renderVacancyCards(): void {
     let place = document.getElementById("availableJobs") as HTMLElement;
-    let vacancies = this.arr.Vacancies;
+    let vacancies = this.arr.Vacancies.filter(vac=>vac.status===vacancyStatus.open);
     let str = ``;
     for (const i in vacancies) {
       str += `<div class="card me-3 myBg" style="width:16rem">
@@ -70,7 +71,6 @@ export class Render {
 
   renderAppliedJobTable(id: number): void {
     let place = document.getElementById("appliedJobs") as HTMLElement;
-    console.log(id);
     let applicants = this.arr.Applicants.filter(
       (applicant) => applicant.CandidateID === id
     );
@@ -154,7 +154,6 @@ export class Render {
       (appl) => appl.scheduleDate === undefined
     );
     applicants.sort((a, b) => a.CandidateID - b.CandidateID);
-    console.log(applicants);
 
     let str = `<table class="table table-info table-striped">
         <caption></caption>
@@ -226,16 +225,13 @@ export class Render {
     }
     place.innerHTML = str;
     for (const i in applicants) {
-      console.log(applicants[i].status);
       if (applicants[i].status < 1) {
-        console.log("Enterring if");
         (
           document.getElementById(
             `updateStatus${applicants[i].InterviewID}`
           ) as HTMLFormElement
         ).setAttribute("disabled", "true");
       } else {
-        console.log("Enterring else");
         (
           document.getElementById(
             `updateStatus${applicants[i].InterviewID}`
@@ -253,7 +249,6 @@ export class Render {
       (appl) => appl.scheduleDate !== undefined
     );
     applicants.sort((a, b) => a.CandidateID - b.CandidateID);
-    console.log(applicants);
 
     let str = `<table class="table table-info table-striped">
         <caption></caption>
@@ -280,8 +275,9 @@ export class Render {
         (fac) => fac.FacultyID === applicants[i].FacultyID
       );
       let statusStr = "";
-      let updateStatusStr = `<select class="form-select" onchange="reRenderStatus(${applicants[i].InterviewID})" id="updateStatus${applicants[i].InterviewID}">
-            <option value="2" >Onhold</option>
+      let updateStatusStr = `<select class="form-select" onchange="reRenderStatus(${applicants[i].InterviewID})" id="updateStatu${applicants[i].InterviewID}">
+      <option value="" selected disabled>Select Status</option>
+      <option value="2" >Onhold</option>
             <option value="3">Rejected</option>
             <option value="4">Selected</option>                      
           </select>`;
@@ -340,7 +336,6 @@ export class Render {
       (appl) => appl.scheduleDate !== undefined
     );
     applicants.sort((a, b) => a.CandidateID - b.CandidateID);
-    console.log(applicants);
 
     let str = `<table class="table table-info table-striped">
         <caption></caption>
@@ -410,12 +405,10 @@ export class Render {
 
   displayFacultiesInScheduler(vacid: number): void {
     let place = document.getElementById("selectFaculty") as HTMLFormElement;
-    console.log(this.arr.Faculties);
     let v = this.arr.Vacancies.find((vac) => vac.VacancyID === vacid);
     let f = this.arr.Faculties.filter(
       (fac) => fac.Department === v?.Department
     );
-    console.log(f);
     let str: string = ``;
     for (const i in f) {
       str += `<option value="${f[i].FacultyID}">${f[i].Name}</option>`;

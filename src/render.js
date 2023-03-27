@@ -1,3 +1,4 @@
+import { vacancyStatus } from "./vacancy";
 export class Render {
     constructor(arr) {
         this.arr = arr;
@@ -7,7 +8,7 @@ export class Render {
     }
     renderVacancyCards() {
         let place = document.getElementById("availableJobs");
-        let vacancies = this.arr.Vacancies;
+        let vacancies = this.arr.Vacancies.filter(vac => vac.status === vacancyStatus.open);
         let str = ``;
         for (const i in vacancies) {
             str += `<div class="card me-3 myBg" style="width:16rem">
@@ -62,7 +63,6 @@ export class Render {
     renderAppliedJobTable(id) {
         var _a, _b;
         let place = document.getElementById("appliedJobs");
-        console.log(id);
         let applicants = this.arr.Applicants.filter((applicant) => applicant.CandidateID === id);
         console.log(applicants);
         let str = `<table class="table table-striped">
@@ -136,7 +136,6 @@ export class Render {
         let place = document.getElementById("allApplicantsTable");
         let applicants = this.arr.Applicants.filter((appl) => appl.scheduleDate === undefined);
         applicants.sort((a, b) => a.CandidateID - b.CandidateID);
-        console.log(applicants);
         let str = `<table class="table table-info table-striped">
         <caption></caption>
           <thead>
@@ -194,13 +193,10 @@ export class Render {
         }
         place.innerHTML = str;
         for (const i in applicants) {
-            console.log(applicants[i].status);
             if (applicants[i].status < 1) {
-                console.log("Enterring if");
                 document.getElementById(`updateStatus${applicants[i].InterviewID}`).setAttribute("disabled", "true");
             }
             else {
-                console.log("Enterring else");
                 document.getElementById(`updateStatus${applicants[i].InterviewID}`).removeAttribute("disabled");
             }
         }
@@ -210,7 +206,6 @@ export class Render {
         let place = document.getElementById("allScheduledApplicantsTable");
         let applicants = this.arr.Applicants.filter((appl) => appl.scheduleDate !== undefined);
         applicants.sort((a, b) => a.CandidateID - b.CandidateID);
-        console.log(applicants);
         let str = `<table class="table table-info table-striped">
         <caption></caption>
           <thead>
@@ -230,8 +225,9 @@ export class Render {
             let candidatedata = this.arr.Candidates.find((cand) => cand.CandidateID === applicants[i].CandidateID);
             let facData = this.arr.Faculties.find((fac) => fac.FacultyID === applicants[i].FacultyID);
             let statusStr = "";
-            let updateStatusStr = `<select class="form-select" onchange="reRenderStatus(${applicants[i].InterviewID})" id="updateStatus${applicants[i].InterviewID}">
-            <option value="2" >Onhold</option>
+            let updateStatusStr = `<select class="form-select" onchange="reRenderStatus(${applicants[i].InterviewID})" id="updateStatu${applicants[i].InterviewID}">
+      <option value="" selected disabled>Select Status</option>
+      <option value="2" >Onhold</option>
             <option value="3">Rejected</option>
             <option value="4">Selected</option>                      
           </select>`;
@@ -279,7 +275,6 @@ export class Render {
         let place = document.getElementById("allHiredApplicantsTable");
         let applicants = this.arr.Applicants.filter((appl) => appl.scheduleDate !== undefined);
         applicants.sort((a, b) => a.CandidateID - b.CandidateID);
-        console.log(applicants);
         let str = `<table class="table table-info table-striped">
         <caption></caption>
           <thead>
@@ -339,10 +334,8 @@ export class Render {
     }
     displayFacultiesInScheduler(vacid) {
         let place = document.getElementById("selectFaculty");
-        console.log(this.arr.Faculties);
         let v = this.arr.Vacancies.find((vac) => vac.VacancyID === vacid);
         let f = this.arr.Faculties.filter((fac) => fac.Department === (v === null || v === void 0 ? void 0 : v.Department));
-        console.log(f);
         let str = ``;
         for (const i in f) {
             str += `<option value="${f[i].FacultyID}">${f[i].Name}</option>`;
